@@ -21,9 +21,3 @@ jobs:
     - run: make requirements
     - run: make test NPM_TESTS=build
     - run: make test NPM_TESTS=${{ matrix.npm-test }}
-    - name: Coverage
-      if: ${{ matrix.npm-test == 'test' }}
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: true
