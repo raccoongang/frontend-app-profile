@@ -17,7 +17,7 @@ test.npm.%: validate-no-uncommitted-package-lock-changes
 
 .PHONY: requirements
 requirements:  ## install ci requirements
-	npm ci
+	npm ci --force
 
 i18n.extract:
 	# Pulling display strings from .jsx files into .json files...

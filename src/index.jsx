@@ -18,6 +18,12 @@ import ReactDOM from 'react-dom';
 
 import Header from '@edx/frontend-component-header';
 import FooterSlot from '@openedx/frontend-slot-footer';
+import {
+  SimaBotProvider,
+  SimaBotModal,
+  SimaBotIcon,
+  useGetSimaBotContext,
+} from '@sigmasoftware/sima-bot';
 
 import messages from './i18n';
 import configureStore from './data/configureStore';
@@ -27,15 +33,41 @@ import Head from './head/Head';
 
 import AppRoutes from './routes/AppRoutes';
 
+function SimaBotShell() {
+  const { isOpenSimaBot, setIsOpenSimaBot } = useGetSimaBotContext();
+
+  return (
+    <>
+      <AppRoutes />
+      <SimaBotIcon />
+      <SimaBotModal
+        isOpenSimaBot={isOpenSimaBot}
+        setIsOpenSimaBot={setIsOpenSimaBot}
+
+        accessToken="[TOKEN]"
+        hostWebApi={{
+            message: '[api-conversations-message]',
+            newConversation: '[api-conversations-new]',
+            webSocket: '[stream-conversations]',
+          }}
+        isOpen={isOpenSimaBot}
+        toggleOpen={setIsOpenSimaBot}
+      />
+    </>
+  );
+}
+
 subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider store={configureStore()}>
-      <Head />
-      <Header />
-      <main id="main">
-        <AppRoutes />
-      </main>
-      <FooterSlot />
+      <SimaBotProvider>
+        <Head />
+        <Header />
+        <main id="main">
+          <SimaBotShell />
+        </main>
+        <FooterSlot />
+      </SimaBotProvider>
     </AppProvider>,
     document.getElementById('root'),
   );
